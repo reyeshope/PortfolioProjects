@@ -1,0 +1,52 @@
+--SELECT *
+--FROM PortfolioProject..lending_club_loans
+
+--Debt to income ratio 
+SELECT (cast(issue_d AS date)) AS IssuedDate, emp_length, grade, dti, purpose
+FROM PortfolioProject..lending_club_loans
+WHERE issue_d is not null
+ORDER BY IssuedDate;
+
+--Total Loan Amount by State
+SELECT addr_state, SUM(loan_amnt) AS LoanAmount
+FROM PortfolioProject..lending_club_loans
+WHERE addr_state is not null
+GROUP BY addr_state
+ORDER BY LoanAmount DESC;
+
+--Total Loan Amount by Term
+SELECT (cast(issue_d AS date)) AS IssuedDate, loan_amnt, term
+FROM PortfolioProject..lending_club_loans
+WHERE issue_d is not null
+ORDER BY IssuedDate
+
+--Loan by Annual Income, Employee Length, Interst Rate, Grade
+SELECT (cast(issue_d AS date)) AS IssueDate, loan_amnt, emp_length, annual_inc, (int_rate)*100 AS InterestRate, grade
+FROM PortfolioProject..lending_club_loans
+WHERE loan_amnt is not null
+ORDER BY int_rate 
+
+--About Members Who Rent
+SELECT (cast(issue_d AS date)) AS IssueDate, addr_state, annual_inc, emp_length, home_ownership, (revol_util)*100 AS UtilizationRate, loan_amnt, grade
+FROM PortfolioProject..lending_club_loans
+WHERE home_ownership = 'RENT'
+ORDER BY annual_inc
+
+--Members Who OWN
+SELECT (cast(issue_d AS date)) AS IssueDate, addr_state, annual_inc, emp_length, home_ownership, (revol_util)*100 AS UtilizationRate, fico_range_low, loan_amnt, grade
+FROM PortfolioProject..lending_club_loans
+WHERE home_ownership = 'OWN'
+ORDER BY annual_inc
+SELECT * FROM PortfolioProject..lending_club_loans
+
+--Members Home Ownership is MORTGAGE
+SELECT (cast(issue_d AS date)) AS IssueDate, annual_inc, emp_length, home_ownership, (revol_util)*100 AS UtilizationRate, fico_range_low, loan_amnt, grade
+FROM PortfolioProject..lending_club_loans
+WHERE home_ownership = 'MORTGAGE'
+ORDER BY annual_inc
+
+--Members Home Ownership is Other
+SELECT (cast(issue_d AS date)) AS IssueDate, addr_state, annual_inc, emp_length, home_ownership, (revol_util)*100 AS UtilizationRate, fico_range_low, loan_amnt, grade
+FROM PortfolioProject..lending_club_loans
+WHERE home_ownership = 'OTHER'
+ORDER BY annual_inc
